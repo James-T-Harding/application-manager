@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.views.generic import TemplateView
 
 from Applications.models import Application
@@ -12,7 +13,14 @@ class IndexViewSet(TemplateView):
 
 
 class ApplicationViewSet(TemplateView):
-    template_name = "application.html"
+    template_name = "update_application.html"
 
     def get_context_data(self, application_id, **kwargs):
-        return super().get_context_data(**kwargs) | dict(application=Application.objects.get(id=application_id))
+        context_data = super().get_context_data(**kwargs)
+        context_data.update(application=Application.objects.get(id=application_id))
+
+        return context_data
+
+
+class ApplicationCreateViewSet(TemplateView):
+    template_name = "new_application.html"
