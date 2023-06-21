@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{application.job_title}} for {{application.company_name}}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Aplication details</h2>
+        <form action="{% url 'applications:update' application.id %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Job Title:</label>
+            <input type="text" class="form-control" value="{{application.job_title}}" name="job_title">
+          </div>
+          <div class="form-group">
+            <label>Company Name:</label>
+            <input type="text" class="form-control" value="{{application.company_name}}" name="company_name">
+          </div>
+          <div class="form-group">
+            <label>Description Link:</label>
+            <input type="text" class="form-control" value="{{application.description_link}}" name="description_link">
+          </div>
+          <div class="form-group">
+            <label>Notes:</label>
+            <textarea class="form-control" rows="4" name="notes">{{application.notes}}</textarea>
+          </div>
+          <div class="w-100">
+            <button type="submit" class="btn btn-default">Submit</button>
+          </div>
+        </form>
+      </div>
+</body>
+</html>
