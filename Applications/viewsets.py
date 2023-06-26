@@ -1,26 +1,46 @@
-from django.urls import reverse
-from django.views.generic import TemplateView
+from django.db.models import Q
+from django.views import generic
 
 from Applications.models import Application
 
 
-class IndexViewSet(TemplateView):
+class SearchViewSet(generic.ListView):
+    search_fields = []
+    comparison_type = "icontains"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        if search := self.request.GET.get("search"):
+            queryset = queryset.filter(*map(self.contained_in_fields, search.split()))
+
+        return queryset
+
+    def contained_in_fields(self, term):
+        result = Q()
+
+        for field in self.search_fields:
+            field += f"__{self.comparison_type}"
+            result |= Q(**{field: term})
+
+        return result
+
+
+class IndexViewSet(SearchViewSet):
     template_name = "index.html"
+    context_object_name = "applications"
+    queryset = Application.objects.all()
+    search_fields = ["job_title", "company_name"]
 
     @property
     def extra_context(self):
-        return dict(applications=list(Application.objects.all()))
+        return dict(search=self.request.GET.get("search", ""))
 
 
-class ApplicationViewSet(TemplateView):
+class ApplicationViewSet(generic.DetailView):
+    model = Application
     template_name = "update_application.html"
 
-    def get_context_data(self, application_id, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        context_data.update(application=Application.objects.get(id=application_id))
 
-        return context_data
-
-
-class ApplicationCreateViewSet(TemplateView):
+class ApplicationCreateViewSet(generic.TemplateView):
     template_name = "new_application.html"
