@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -7,6 +8,7 @@
         <title>Homepage</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'index.css' %}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     </head>
     <body>
@@ -16,8 +18,10 @@
             </div>
 
             <form>
-              <input type="text" placeholder="Search.." name="search" value="{{search}}">
-              <button type="submit"><i class="fa fa-search"></i></button>
+                <div class="float-right">
+                    <input type="text" placeholder="Search.." name="search" value="{{search}}">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </div>
             </form>
 
             <table class="table">
@@ -25,7 +29,7 @@
                     <tr>
                         <th>Job Title</th>
                         <th>Company Name</th>
-                        <th>Job Link</th>
+                        <th>Notes</th>
                     </tr>
                 </thead>
                 
@@ -33,14 +37,12 @@
                     {% for application in applications %}
                         <tr>
                             <td>
-                                <a href="{% url 'applications:detail' application.id%}">
+                                <a href="{{application.description_link}}">
                                     {{application.job_title}}
                                 </a>
                             </td>
                             <td>{{application.company_name}}</td>
-                            <td>
-                                <a href={{application.description_link}}>{{application.description_link}}</a>
-                            </td>
+                            <td>{{application.notes}}</td>
                         </tr>
                     {% endfor %} 
                 </tbody>

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from Applications import models
+from applications import models
 
 
 class ApplicationSerializer(serializers.HyperlinkedModelSerializer):

@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
 
 from API.serializers import ApplicationSerializer
-from Applications import models
+from applications import models
 
 
 # Create your views here.

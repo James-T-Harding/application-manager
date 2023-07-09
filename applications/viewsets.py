@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.views import generic
 
-from Applications.models import Application
+from applications.models import Application
 
 
 class SearchViewSet(generic.ListView):
